@@ -92,7 +92,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: CardSwiper(
                   controller: _cardController,
                   cardsCount: catProvider.cats.length,
-                  onSwipe: (previousIndex, currentIndex, direction) {
+                  onSwipe: (int previousIndex, int currentIndex, CardSwiperDirection direction) {
                     if (direction == CardSwiperDirection.right) {
                       catProvider.likeCat();
                     } else if (direction == CardSwiperDirection.left) {
@@ -103,7 +103,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   numberOfCardsDisplayed: 1,
                   backCardOffset: const Offset(0, 0),
                   padding: const EdgeInsets.all(24.0),
-                  cardBuilder: (context, index, percentThresholdX, percentThresholdY) {
+                  cardBuilder: (BuildContext context, int index, double percentThresholdX, double percentThresholdY) {
                     final cat = catProvider.cats[index];
                     return CatCard(
                       cat: cat,
