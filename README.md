@@ -1,16 +1,48 @@
-# homework_1
+# Cat Swiper App
 
-first flutter Homework on march 2025
+A Flutter application that allows users to browse and like/dislike cat images from TheCatAPI.
+
+## Features
+
+- Display random cat images with breed information
+- Swipe left/right to dislike/like cats
+- Like/Dislike buttons for alternative interaction
+- Counter to track liked cats
+- Detailed view of cat breed information
+- Cached images for better performance
+- Responsive UI design
+
+## Screenshots
+
+![Home Screen](screenshots/home_screen.png)
+![Detail Screen](screenshots/detail_screen.png)
+![Swiping Demo](screenshots/swiping_demo.png)
+
+## Technical Implementation
+
+- Used Provider for state management
+- Implemented HTTP requests to TheCatAPI
+- Used CachedNetworkImage for efficient image loading
+- Implemented card swiping with flutter_card_swiper
+- Hero animations for smooth transitions
+- Proper error handling and loading states
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+1. Clone the repository
+2. Run `flutter pub get` to install dependencies
+3. Replace the API key in `cat_api_service.dart` with your own from [TheCatAPI](https://thecatapi.com/)
+4. Run the app with `flutter run`
 
-A few resources to get you started if this is your first Flutter project:
+## Download
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+You can download the APK version of the app [here](https://example.com/cat_swiper.apk).
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Dependencies
+
+- flutter: SDK
+- http: ^1.2.1
+- cached_network_image: ^3.3.1
+- flutter_card_swiper: ^6.0.0
+- provider: ^6.1.1
+- flutter_lints: ^5.0.0
