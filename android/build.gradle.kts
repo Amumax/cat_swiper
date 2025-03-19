@@ -6,14 +6,6 @@ allprojects {
 }
 
 // Отключаем использование NDK, так как он не требуется для этого проекта
-subprojects {
-    project.plugins.withId("com.android.application") {
-        project.extensions.configure<com.android.build.gradle.BaseExtension> {
-            // Используем пустую строку вместо null
-            ndkVersion = ""
-        }
-    }
-}
 
 val newBuildDir: Directory = rootProject.layout.buildDirectory.dir("../../build").get()
 rootProject.layout.buildDirectory.value(newBuildDir)

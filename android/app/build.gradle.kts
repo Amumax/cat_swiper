@@ -8,7 +8,8 @@ plugins {
 android {
     namespace = "com.example.homework_1"
     compileSdk = flutter.compileSdkVersion
-    ndkVersion = flutter.ndkVersion
+    // Отключаем использование NDK, так как он не требуется для этого проекта
+    ndkVersion = null
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
