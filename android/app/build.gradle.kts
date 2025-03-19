@@ -9,7 +9,7 @@ android {
     namespace = "com.example.homework_1"
     compileSdk = flutter.compileSdkVersion
     // Отключаем использование NDK, так как он не требуется для этого проекта
-    ndkVersion = null
+    ndkVersion = ""
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
