@@ -9,7 +9,7 @@ class CatApiService {
   Future<List<Cat>> getRandomCats({int limit = 1, String? breedId}) async {
     try {
       // Добавляем параметры для оптимизации загрузки изображений
-      String endpoint = '$_baseUrl/images/search?limit=$limit&has_breeds=1&size=med&format=jpg';
+      String endpoint = '$_baseUrl/images/search?limit=$limit&has_breeds=1';
 
       if (breedId != null && breedId.isNotEmpty) {
         endpoint += '&breed_ids=$breedId';
