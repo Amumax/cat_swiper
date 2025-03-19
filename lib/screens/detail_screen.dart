@@ -1,14 +1,14 @@
-import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/material.dart';
 import '../models/cat.dart';
 
 class DetailScreen extends StatelessWidget {
   final Cat cat;
 
   const DetailScreen({
-    Key? key,
+    super.key,
     required this.cat,
-  }) : super(key: key);
+  });
 
   Widget _buildRatingBar(String label, int? rating) {
     return Padding(

@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 import 'package:provider/provider.dart';
+
 import '../models/cat.dart';
 import '../providers/cat_provider.dart';
 import '../widgets/cat_card.dart';
-import '../widgets/like_button.dart';
 import '../widgets/dislike_button.dart';
+import '../widgets/like_button.dart';
 import 'detail_screen.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+  const HomeScreen({super.key});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();

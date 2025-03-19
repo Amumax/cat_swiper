@@ -5,7 +5,7 @@ import '../services/cat_api_service.dart';
 class CatProvider extends ChangeNotifier {
   final CatApiService _catApiService = CatApiService();
   
-  List<Cat> _cats = [];
+  final List<Cat> _cats = [];
   int _likedCatsCount = 0;
   bool _isLoading = false;
   String? _error;

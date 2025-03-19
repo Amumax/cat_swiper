@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/material.dart';
 import '../models/cat.dart';
 
 class CatCard extends StatelessWidget {
@@ -7,10 +7,10 @@ class CatCard extends StatelessWidget {
   final VoidCallback onTap;
 
   const CatCard({
-    Key? key,
+    super.key,
     required this.cat,
     required this.onTap,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
