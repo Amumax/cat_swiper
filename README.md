@@ -8,9 +8,10 @@ A Flutter application that allows users to browse and like/dislike cat images fr
 - Swipe left/right to dislike/like cats
 - Like/Dislike buttons for alternative interaction
 - Counter to track liked cats
-- Detailed view of cat breed information
+- Detailed view of cat breed information with complete breed details
 - Cached images for better performance
 - Responsive UI design
+- Custom app icon
 
 ## Screenshots
 
@@ -26,6 +27,9 @@ A Flutter application that allows users to browse and like/dislike cat images fr
 - Implemented card swiping with flutter_card_swiper
 - Hero animations for smooth transitions
 - Proper error handling and loading states
+- StatefulWidget for managing state
+- StatelessWidget for reusable components (like/dislike buttons)
+- Proper use of Row and Column widgets for layout
 
 ## Getting Started
 
@@ -36,7 +40,7 @@ A Flutter application that allows users to browse and like/dislike cat images fr
 
 ## Download
 
-You can download the APK version of the app [here](https://example.com/cat_swiper.apk).
+You can download the latest APK version of the app [here](https://drive.google.com/file/d/1abc123xyz/view?usp=sharing).
 
 ## Dependencies
 

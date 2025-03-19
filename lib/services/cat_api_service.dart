@@ -4,7 +4,7 @@ import '../models/cat.dart';
 
 class CatApiService {
   static const String _baseUrl = 'https://api.thecatapi.com/v1';
-  static const String _apiKey = 'live_Gg9Yd9Yd9Yd9Yd9Yd9Yd9Yd9Yd9Yd9Yd9'; // Replace with your API key
+  static const String _apiKey = 'DEMO-API-KEY'; // Free API key for development
 
   Future<List<Cat>> getRandomCats({int limit = 1, String? breedId}) async {
     String endpoint = '$_baseUrl/images/search?limit=$limit';
