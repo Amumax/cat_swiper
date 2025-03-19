@@ -28,11 +28,13 @@ class CatCard extends StatelessWidget {
                   child: CachedNetworkImage(
                     imageUrl: cat.url,
                     fit: BoxFit.cover,
+                    memCacheWidth: 800, // Ограничиваем размер кэшируемого изображения
+                    fadeInDuration: const Duration(milliseconds: 300),
                     placeholder:
                         (context, url) =>
                             const Center(child: CircularProgressIndicator()),
                     errorWidget:
-                        (context, url, error) => const Icon(Icons.error),
+                        (context, url, error) => const Icon(Icons.error, size: 50, color: Colors.red),
                   ),
                 ),
               ),

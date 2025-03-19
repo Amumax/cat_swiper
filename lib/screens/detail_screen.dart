@@ -56,10 +56,12 @@ class DetailScreen extends StatelessWidget {
                 height: 300,
                 width: double.infinity,
                 fit: BoxFit.cover,
+                memCacheWidth: 1200, // Ограничиваем размер кэшируемого изображения
+                fadeInDuration: const Duration(milliseconds: 300),
                 placeholder:
                     (context, url) =>
                         const Center(child: CircularProgressIndicator()),
-                errorWidget: (context, url, error) => const Icon(Icons.error),
+                errorWidget: (context, url, error) => const Icon(Icons.error, size: 50, color: Colors.red),
               ),
             ),
             if (breed != null) ...[
