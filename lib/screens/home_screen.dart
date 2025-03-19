@@ -102,6 +102,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   numberOfCardsDisplayed: 1,
                   backCardOffset: const Offset(0, 0),
                   padding: const EdgeInsets.all(24.0),
+                  allowedSwipeDirection: AllowedSwipeDirection.horizontal,
                   cardBuilder: (
                     context,
                     index,
@@ -123,13 +124,13 @@ class _HomeScreenState extends State<HomeScreen> {
                   children: [
                     DislikeButton(
                       onPressed: () {
-                        _cardController.swipe();
+                        _cardController.swipe(CardSwiperDirection.left);
                         catProvider.dislikeCat();
                       },
                     ),
                     LikeButton(
                       onPressed: () {
-                        _cardController.swipe();
+                        _cardController.swipe(CardSwiperDirection.right);
                         catProvider.likeCat();
                       },
                     ),
