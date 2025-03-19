@@ -123,12 +123,14 @@ class _HomeScreenState extends State<HomeScreen> {
                   children: [
                     DislikeButton(
                       onPressed: () {
-                        _cardController.swipe();
+                        _cardController.swipe(CardSwiperDirection.left);
+                        catProvider.dislikeCat();
                       },
                     ),
                     LikeButton(
                       onPressed: () {
-                        _cardController.swipe();
+                        _cardController.swipe(CardSwiperDirection.right);
+                        catProvider.likeCat();
                       },
                     ),
                   ],
