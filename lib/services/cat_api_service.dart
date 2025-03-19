@@ -7,23 +7,32 @@ class CatApiService {
   static const String _apiKey = 'live_28eBZMsCParu7dWJ88d9gjgcGvJEMIPGgqVFYCOQa7Xw0WEaFMqwhHz5SInIGfGk'; // API key for TheCatAPI
 
   Future<List<Cat>> getRandomCats({int limit = 1, String? breedId}) async {
-    // Добавляем параметры для оптимизации загрузки изображений
-    String endpoint = '$_baseUrl/images/search?limit=$limit&has_breeds=1&size=med&format=jpg';
+    try {
+      // Добавляем параметры для оптимизации загрузки изображений
+      String endpoint = '$_baseUrl/images/search?limit=$limit&has_breeds=1&size=med&format=jpg';
 
-    if (breedId != null && breedId.isNotEmpty) {
-      endpoint += '&breed_ids=$breedId';
-    }
+      if (breedId != null && breedId.isNotEmpty) {
+        endpoint += '&breed_ids=$breedId';
+      }
 
-    final response = await http.get(
-      Uri.parse(endpoint),
-      headers: {'x-api-key': _apiKey},
-    );
+      final response = await http.get(
+        Uri.parse(endpoint),
+        headers: {'x-api-key': _apiKey},
+      ).timeout(const Duration(seconds: 10));
 
-    if (response.statusCode == 200) {
-      final List<dynamic> data = json.decode(response.body);
-      return data.map((json) => Cat.fromJson(json)).toList();
-    } else {
-      throw Exception('Failed to load cats: ${response.statusCode}');
+      if (response.statusCode == 200) {
+        final List<dynamic> data = json.decode(response.body);
+        return data.map((json) => Cat.fromJson(json)).toList();
+      } else {
+        throw Exception('Failed to load cats: ${response.statusCode}');
+      }
+    } catch (e) {
+      if (e.toString().contains('SocketException') || 
+          e.toString().contains('Failed host lookup')) {
+        throw Exception('Нет подключения к интернету. Проверьте соединение и попробуйте снова.');
+      } else {
+        throw Exception('Ошибка загрузки данных: $e');
+      }
     }
   }
 

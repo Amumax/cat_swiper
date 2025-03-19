@@ -15,6 +15,33 @@ class Cat {
 
     return Cat(id: json['id'], url: json['url'], breeds: breedsList);
   }
+  
+  // Создает тестового кота для демонстрации без интернета
+  static Cat createTestCat() {
+    return Cat(
+      id: 'test-cat-${DateTime.now().millisecondsSinceEpoch}',
+      url: 'https://cdn2.thecatapi.com/images/MTY5NjAwOQ.jpg',
+      breeds: [
+        Breed(
+          id: 'test-breed',
+          name: 'Тестовая порода',
+          description: 'Это тестовый кот для демонстрации приложения без доступа к интернету.',
+          temperament: 'Дружелюбный, игривый, любопытный',
+          origin: 'Россия',
+          lifeSpan: '12-15',
+          adaptability: 5,
+          affectionLevel: 5,
+          childFriendly: 4,
+          dogFriendly: 4,
+          energyLevel: 5,
+          healthIssues: 1,
+          intelligence: 5,
+          socialNeeds: 3,
+          strangerFriendly: 4,
+        )
+      ],
+    );
+  }
 }
 
 class Breed {
