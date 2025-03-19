@@ -4,7 +4,7 @@ import '../services/cat_api_service.dart';
 
 class CatProvider extends ChangeNotifier {
   final CatApiService _catApiService = CatApiService();
-  
+
   final List<Cat> _cats = [];
   int _likedCatsCount = 0;
   bool _isLoading = false;
@@ -14,7 +14,7 @@ class CatProvider extends ChangeNotifier {
   int get likedCatsCount => _likedCatsCount;
   bool get isLoading => _isLoading;
   String? get error => _error;
-  
+
   Cat? get currentCat => _cats.isNotEmpty ? _cats.first : null;
 
   Future<void> fetchCats({int limit = 5}) async {
@@ -22,10 +22,10 @@ class CatProvider extends ChangeNotifier {
       _isLoading = true;
       _error = null;
       notifyListeners();
-      
+
       final newCats = await _catApiService.getRandomCats(limit: limit);
       _cats.addAll(newCats);
-      
+
       _isLoading = false;
       notifyListeners();
     } catch (e) {
@@ -39,11 +39,11 @@ class CatProvider extends ChangeNotifier {
     if (_cats.isNotEmpty) {
       _likedCatsCount++;
       _cats.removeAt(0);
-      
+
       if (_cats.length < 3) {
         fetchCats();
       }
-      
+
       notifyListeners();
     }
   }
@@ -51,11 +51,11 @@ class CatProvider extends ChangeNotifier {
   void dislikeCat() {
     if (_cats.isNotEmpty) {
       _cats.removeAt(0);
-      
+
       if (_cats.length < 3) {
         fetchCats();
       }
-      
+
       notifyListeners();
     }
   }

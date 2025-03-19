@@ -3,11 +3,7 @@ class Cat {
   final String url;
   final List<Breed> breeds;
 
-  Cat({
-    required this.id,
-    required this.url,
-    required this.breeds,
-  });
+  Cat({required this.id, required this.url, required this.breeds});
 
   factory Cat.fromJson(Map<String, dynamic> json) {
     List<Breed> breedsList = [];
@@ -17,11 +13,7 @@ class Cat {
       );
     }
 
-    return Cat(
-      id: json['id'],
-      url: json['url'],
-      breeds: breedsList,
-    );
+    return Cat(id: json['id'], url: json['url'], breeds: breedsList);
   }
 }
 
