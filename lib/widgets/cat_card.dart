@@ -6,11 +6,7 @@ class CatCard extends StatelessWidget {
   final Cat cat;
   final VoidCallback onTap;
 
-  const CatCard({
-    super.key,
-    required this.cat,
-    required this.onTap,
-  });
+  const CatCard({super.key, required this.cat, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -18,24 +14,25 @@ class CatCard extends StatelessWidget {
       onTap: onTap,
       child: Card(
         elevation: 4,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Expanded(
               child: ClipRRect(
-                borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
+                borderRadius: const BorderRadius.vertical(
+                  top: Radius.circular(16),
+                ),
                 child: Hero(
                   tag: 'cat_image_${cat.id}',
                   child: CachedNetworkImage(
                     imageUrl: cat.url,
                     fit: BoxFit.cover,
-                    placeholder: (context, url) => const Center(
-                      child: CircularProgressIndicator(),
-                    ),
-                    errorWidget: (context, url, error) => const Icon(Icons.error),
+                    placeholder:
+                        (context, url) =>
+                            const Center(child: CircularProgressIndicator()),
+                    errorWidget:
+                        (context, url, error) => const Icon(Icons.error),
                   ),
                 ),
               ),

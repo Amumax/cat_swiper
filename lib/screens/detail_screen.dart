@@ -5,10 +5,7 @@ import '../models/cat.dart';
 class DetailScreen extends StatelessWidget {
   final Cat cat;
 
-  const DetailScreen({
-    super.key,
-    required this.cat,
-  });
+  const DetailScreen({super.key, required this.cat});
 
   Widget _buildRatingBar(String label, int? rating) {
     return Padding(
@@ -26,9 +23,10 @@ class DetailScreen extends StatelessWidget {
             children: List.generate(5, (index) {
               return Icon(
                 Icons.star,
-                color: (rating != null && index < rating)
-                    ? Colors.amber
-                    : Colors.grey,
+                color:
+                    (rating != null && index < rating)
+                        ? Colors.amber
+                        : Colors.grey,
                 size: 20,
               );
             }),
@@ -58,9 +56,9 @@ class DetailScreen extends StatelessWidget {
                 height: 300,
                 width: double.infinity,
                 fit: BoxFit.cover,
-                placeholder: (context, url) => const Center(
-                  child: CircularProgressIndicator(),
-                ),
+                placeholder:
+                    (context, url) =>
+                        const Center(child: CircularProgressIndicator()),
                 errorWidget: (context, url, error) => const Icon(Icons.error),
               ),
             ),
@@ -91,10 +89,7 @@ class DetailScreen extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 4),
-                    Text(
-                      breed.origin,
-                      style: const TextStyle(fontSize: 16),
-                    ),
+                    Text(breed.origin, style: const TextStyle(fontSize: 16)),
                     const SizedBox(height: 16),
                     const Text(
                       'Temperament',
@@ -138,7 +133,10 @@ class DetailScreen extends StatelessWidget {
                     _buildRatingBar('Health Issues', breed.healthIssues),
                     _buildRatingBar('Intelligence', breed.intelligence),
                     _buildRatingBar('Social Needs', breed.socialNeeds),
-                    _buildRatingBar('Stranger Friendly', breed.strangerFriendly),
+                    _buildRatingBar(
+                      'Stranger Friendly',
+                      breed.strangerFriendly,
+                    ),
                   ],
                 ),
               ),
