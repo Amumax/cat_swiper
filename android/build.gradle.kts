@@ -9,7 +9,8 @@ allprojects {
 subprojects {
     project.plugins.withId("com.android.application") {
         project.extensions.configure<com.android.build.gradle.BaseExtension> {
-            ndkVersion = null
+            // Используем пустую строку вместо null
+            ndkVersion = ""
         }
     }
 }
