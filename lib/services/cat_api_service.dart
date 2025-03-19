@@ -8,18 +8,16 @@ class CatApiService {
 
   Future<List<Cat>> getRandomCats({int limit = 1, String? breedId}) async {
     String endpoint = '$_baseUrl/images/search?limit=$limit';
-    
+
     if (breedId != null && breedId.isNotEmpty) {
       endpoint += '&breed_ids=$breedId';
     }
-    
+
     endpoint += '&has_breeds=1';
 
     final response = await http.get(
       Uri.parse(endpoint),
-      headers: {
-        'x-api-key': _apiKey,
-      },
+      headers: {'x-api-key': _apiKey},
     );
 
     if (response.statusCode == 200) {
@@ -33,9 +31,7 @@ class CatApiService {
   Future<List<Breed>> getBreeds() async {
     final response = await http.get(
       Uri.parse('$_baseUrl/breeds'),
-      headers: {
-        'x-api-key': _apiKey,
-      },
+      headers: {'x-api-key': _apiKey},
     );
 
     if (response.statusCode == 200) {
