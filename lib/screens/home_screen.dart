@@ -37,9 +37,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void _navigateToDetailScreen(Cat cat) {
     Navigator.push(
       context,
-      MaterialPageRoute(
-        builder: (context) => DetailScreen(cat: cat),
-      ),
+      MaterialPageRoute(builder: (context) => DetailScreen(cat: cat)),
     );
   }
 
@@ -104,7 +102,12 @@ class _HomeScreenState extends State<HomeScreen> {
                   numberOfCardsDisplayed: 1,
                   backCardOffset: const Offset(0, 0),
                   padding: const EdgeInsets.all(24.0),
-                  cardBuilder: (context, index, percentThresholdX, percentThresholdY) {
+                  cardBuilder: (
+                    context,
+                    index,
+                    percentThresholdX,
+                    percentThresholdY,
+                  ) {
                     final cat = catProvider.cats[index];
                     return CatCard(
                       cat: cat,
