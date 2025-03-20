@@ -17,13 +17,13 @@ Cat Swiper создан для демонстрации возможностей
 
 ## Скриншоты интерфейса
 
-![Home Screen](assets/screenshots/home_screen.png)  
+![Home Screen](screenshots/home_screen.png)  
 *Главный экран с отображением случайного котика и кнопками для свайпа.*
 
-![Detail Screen](assets/screenshots/detail_screen.png)  
+![Detail Screen](screenshots/detail_screen.png)  
 *Детальный экран с информацией о породе котика.*
 
-![Liked Cats Gallery](assets/screenshots/liked_cats_screen.png)  
+![Liked Cats Gallery](screenshots/liked_cats_screen.png)  
 *Галерея лайкнутых котиков.*
 
 ## Ссылка на APK
@@ -36,8 +36,7 @@ Cat Swiper создан для демонстрации возможностей
 1. **Клонируйте репозиторий:**
 
    ```bash
-   git clone 
-   cd cat_swiper
+   git clone https://github.com/Amumax/cat_swiper.git
    ```
 
 2. **Установите зависимости:**
