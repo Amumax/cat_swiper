@@ -4,13 +4,11 @@ import '../models/cat.dart';
 
 class CatApiService {
   static const String _baseUrl = 'https://api.thecatapi.com/v1';
-  static const String _apiKey = 'live_28eBZMsCParu7dWJ88d9gjgcGvJEMIPGgqVFYCOQa7Xw0WEaFMqwhHz5SInIGfGk'; // API key for TheCatAPI
+  static const String _apiKey = 'live_28eBZMsCParu7dWJ88d9gjgcGvJEMIPGgqVFYCOQa7Xw0WEaFMqwhHz5SInIGfGk';
 
   Future<List<Cat>> getRandomCats({int limit = 1, String? breedId}) async {
     try {
-      // Добавляем параметры для оптимизации загрузки изображений
       String endpoint = '$_baseUrl/images/search?limit=$limit&has_breeds=1';
-
       if (breedId != null && breedId.isNotEmpty) {
         endpoint += '&breed_ids=$breedId';
       }
@@ -27,7 +25,7 @@ class CatApiService {
         throw Exception('Failed to load cats: ${response.statusCode}');
       }
     } catch (e) {
-      if (e.toString().contains('SocketException') || 
+      if (e.toString().contains('SocketException') ||
           e.toString().contains('Failed host lookup')) {
         throw Exception('Нет подключения к интернету. Проверьте соединение и попробуйте снова.');
       } else {

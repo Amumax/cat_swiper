@@ -12,11 +12,9 @@ class Cat {
         json['breeds'].map((breed) => Breed.fromJson(breed)),
       );
     }
-
     return Cat(id: json['id'], url: json['url'], breeds: breedsList);
   }
-  
-  // Создает тестового кота для демонстрации без интернета
+
   static Cat createTestCat() {
     return Cat(
       id: 'test-cat-${DateTime.now().millisecondsSinceEpoch}',

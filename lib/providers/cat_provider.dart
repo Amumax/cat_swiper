@@ -6,11 +6,13 @@ class CatProvider extends ChangeNotifier {
   final CatApiService _catApiService = CatApiService();
 
   final List<Cat> _cats = [];
+  final List<Cat> _likedCats = [];
   int _likedCatsCount = 0;
   bool _isLoading = false;
   String? _error;
 
   List<Cat> get cats => _cats;
+  List<Cat> get likedCats => _likedCats;
   int get likedCatsCount => _likedCatsCount;
   bool get isLoading => _isLoading;
   String? get error => _error;
@@ -27,17 +29,13 @@ class CatProvider extends ChangeNotifier {
         final newCats = await _catApiService.getRandomCats(limit: limit);
         _cats.addAll(newCats);
       } catch (e) {
-        // Если не удалось получить данные из API, используем тестовые данные
         if (_cats.isEmpty) {
-          // Добавляем несколько тестовых котов для демонстрации
           for (int i = 0; i < 3; i++) {
             _cats.add(Cat.createTestCat());
           }
         }
-        
-        // Если у нас уже есть коты, не показываем ошибку
         if (_cats.isEmpty) {
-          throw e; // Пробрасываем ошибку дальше, если не смогли создать тестовых котов
+          rethrow;
         }
       }
 
@@ -52,13 +50,12 @@ class CatProvider extends ChangeNotifier {
 
   void likeCat() {
     if (_cats.isNotEmpty) {
+      _likedCats.add(_cats.first);
       _likedCatsCount++;
       _cats.removeAt(0);
-
       if (_cats.length < 3) {
         fetchCats();
       }
-
       notifyListeners();
     }
   }
@@ -66,17 +63,16 @@ class CatProvider extends ChangeNotifier {
   void dislikeCat() {
     if (_cats.isNotEmpty) {
       _cats.removeAt(0);
-
       if (_cats.length < 3) {
         fetchCats();
       }
-
       notifyListeners();
     }
   }
 
   void resetLikedCount() {
     _likedCatsCount = 0;
+    _likedCats.clear();
     notifyListeners();
   }
 }

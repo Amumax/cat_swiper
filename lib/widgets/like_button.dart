@@ -3,24 +3,22 @@ import 'package:flutter/material.dart';
 class LikeButton extends StatelessWidget {
   final VoidCallback onPressed;
 
-  const LikeButton({
-    super.key,
-    required this.onPressed,
-  });
+  const LikeButton({super.key, required this.onPressed});
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
-        backgroundColor: Colors.green,
-        foregroundColor: Colors.white,
+        backgroundColor: Colors.transparent,
+        shadowColor: Colors.transparent,
         shape: const CircleBorder(),
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(40),
       ),
-      child: const Icon(
-        Icons.favorite,
-        size: 30,
+      child: Image.asset(
+        'assets/icons/like_icon.png',
+        width: 125,
+        height: 125,
       ),
     );
   }

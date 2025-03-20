@@ -4,10 +4,11 @@ import 'package:provider/provider.dart';
 
 import '../models/cat.dart';
 import '../providers/cat_provider.dart';
+import '../screens/detail_screen.dart';
+import '../screens/liked_cats_screen.dart';
 import '../widgets/cat_card.dart';
 import '../widgets/dislike_button.dart';
 import '../widgets/like_button.dart';
-import 'detail_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -22,9 +23,8 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    // Fetch cats when the screen initializes
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Provider.of<CatProvider>(context, listen: false).fetchCats();
+      Provider.of<CatProvider>(context, listen: false).fetchCats(limit: 5);
     });
   }
 
@@ -41,120 +41,134 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  void _navigateToLikedCats() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const LikedCatsScreen()),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Cat Swiper'),
-        centerTitle: true,
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-      ),
-      body: Consumer<CatProvider>(
-        builder: (context, catProvider, child) {
-          if (catProvider.isLoading && catProvider.cats.isEmpty) {
-            return const Center(child: CircularProgressIndicator());
-          }
-
-          if (catProvider.error != null && catProvider.cats.isEmpty) {
-            return Center(
-              child: Padding(
-                padding: const EdgeInsets.all(24.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Icon(Icons.error_outline, size: 64, color: Colors.red),
-                    const SizedBox(height: 16),
-                    Text(
-                      '${catProvider.error}',
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(fontSize: 16),
-                    ),
-                    const SizedBox(height: 24),
-                    ElevatedButton.icon(
-                      onPressed: () => catProvider.fetchCats(),
-                      icon: const Icon(Icons.refresh),
-                      label: const Text('Повторить'),
-                    ),
-                  ],
-                ),
-              ),
-            );
-          }
-
-          if (catProvider.cats.isEmpty) {
-            return const Center(child: Text('No cats available'));
-          }
-
-          return Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Text(
+        actions: [
+          Consumer<CatProvider>(
+            builder: (context, catProvider, child) {
+              return TextButton.icon(
+                onPressed: _navigateToLikedCats,
+                icon: const Icon(Icons.photo_library, color: Colors.black87),
+                label: Text(
                   'Liked Cats: ${catProvider.likedCatsCount}',
-                  style: const TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style: const TextStyle(color: Colors.black87, fontFamily: 'Montserrat'),
                 ),
-              ),
-              Expanded(
-                child: CardSwiper(
-                  controller: _cardController,
-                  cardsCount: catProvider.cats.length,
-                  onSwipe: (previousIndex, currentIndex, direction) {
-                    if (direction == CardSwiperDirection.right) {
-                      catProvider.likeCat();
-                    } else if (direction == CardSwiperDirection.left) {
-                      catProvider.dislikeCat();
-                    }
-                    return true;
-                  },
-                  numberOfCardsDisplayed: 1,
-                  backCardOffset: const Offset(0, 0),
+              );
+            },
+          ),
+        ],
+      ),
+      body: Container(
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('assets/images/background.png'),
+            fit: BoxFit.cover,
+          ),
+        ),
+        child: Consumer<CatProvider>(
+          builder: (context, catProvider, child) {
+            if (catProvider.isLoading && catProvider.cats.isEmpty) {
+              return const Center(child: CircularProgressIndicator());
+            }
+
+            if (catProvider.error != null && catProvider.cats.isEmpty) {
+              return Center(
+                child: Padding(
                   padding: const EdgeInsets.all(24.0),
-                  allowedSwipeDirection: const AllowedSwipeDirection.only(
-                    left: true,
-                    right: true,
-                    up: false,
-                    down: false,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Icon(Icons.error_outline, size: 64, color: Colors.red),
+                      const SizedBox(height: 16),
+                      Text(
+                        '${catProvider.error}',
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(fontSize: 16),
+                      ),
+                      const SizedBox(height: 24),
+                      ElevatedButton.icon(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.black87,
+                          foregroundColor: Colors.white,
+                        ),
+                        onPressed: () => catProvider.fetchCats(),
+                        icon: const Icon(Icons.refresh),
+                        label: const Text('Повторить'),
+                      ),
+                    ],
                   ),
-                  cardBuilder: (
-                    context,
-                    index,
-                    percentThresholdX,
-                    percentThresholdY,
-                  ) {
-                    final cat = catProvider.cats[index];
-                    return CatCard(
-                      cat: cat,
-                      onTap: () => _navigateToDetailScreen(cat),
-                    );
-                  },
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 20.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    DislikeButton(
-                      onPressed: () {
-                        _cardController.swipe();
-                        catProvider.dislikeCat();
-                      },
-                    ),
-                    LikeButton(
-                      onPressed: () {
-                        _cardController.swipe();
+              );
+            }
+
+            if (catProvider.cats.isEmpty) {
+              return const Center(child: Text('No cats available'));
+            }
+
+            return Column(
+              children: [
+                Expanded(
+                  child: CardSwiper(
+                    controller: _cardController,
+                    cardsCount: catProvider.cats.length,
+                    onSwipe: (previousIndex, currentIndex, direction) {
+                      if (direction == CardSwiperDirection.right) {
                         catProvider.likeCat();
-                      },
+                      } else if (direction == CardSwiperDirection.left) {
+                        catProvider.dislikeCat();
+                      }
+                      return true;
+                    },
+                    numberOfCardsDisplayed: 1,
+                    backCardOffset: const Offset(0, 0),
+                    padding: const EdgeInsets.all(24.0),
+                    allowedSwipeDirection: const AllowedSwipeDirection.only(
+                      left: true,
+                      right: true,
+                      up: false,
+                      down: false,
                     ),
-                  ],
+                    cardBuilder: (context, index, percentThresholdX, percentThresholdY) {
+                      final cat = catProvider.cats[index];
+                      return CatCard(
+                        cat: cat,
+                        onTap: () => _navigateToDetailScreen(cat),
+                      );
+                    },
+                  ),
                 ),
-              ),
-            ],
-          );
-        },
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 20.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      DislikeButton(
+                        onPressed: () {
+                          _cardController.swipeLeft();
+                        },
+                      ),
+                      LikeButton(
+                        onPressed: () {
+                          _cardController.swipeRight();
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            );
+          },
+        ),
       ),
     );
   }

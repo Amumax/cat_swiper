@@ -13,23 +13,24 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) => CatProvider(),
+      create: (_) => CatProvider(),
       child: MaterialApp(
         title: 'Cat Swiper',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
-          useMaterial3: true,
+          fontFamily: 'Montserrat',
           appBarTheme: const AppBarTheme(
-            centerTitle: true,
+            backgroundColor: Colors.white,
             elevation: 2,
-          ),
-          cardTheme: CardTheme(
-            elevation: 4,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(16),
+            iconTheme: IconThemeData(color: Colors.black87),
+            titleTextStyle: TextStyle(
+              fontFamily: 'Pacifico',
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+              color: Colors.black87,
             ),
           ),
+          scaffoldBackgroundColor: Colors.white,
         ),
         home: const HomeScreen(),
       ),
