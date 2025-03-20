@@ -29,7 +29,7 @@ Cat Swiper создан для демонстрации возможностей
 ## Ссылка на APK
 
 Скачайте актуальную версию APK:  
-[Cat Swiper APK]()
+[Cat Swiper APK](https://github.com/Amumax/cat_swiper/releases/download/main/app-release.apk)
 
 ## Установка и запуск
 
