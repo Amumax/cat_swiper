@@ -1,52 +1,61 @@
-# Cat Swiper App
+# Cat Swiper
 
-A Flutter application that allows users to browse and like/dislike cat images from TheCatAPI.
+Cat Swiper — это кроссплатформенное Flutter-приложение, позволяющее просматривать случайные изображения котиков с информацией о породе, свайпать их влево или вправо для дизлайка/лайка, а также просматривать детальную информацию о котиках и галерею лайкнутых котов.
 
-## Features
+## Описание проекта
 
-- Display random cat images with breed information
-- Swipe left/right to dislike/like cats
-- Like/Dislike buttons for alternative interaction
-- Counter to track liked cats
-- Detailed view of cat breed information with complete breed details
-- Cached images for better performance
-- Responsive UI design
-- Custom app icon
+Cat Swiper создан для демонстрации возможностей Flutter и современных подходов к разработке мобильных приложений. Приложение использует [TheCatAPI](https://thecatapi.com) для получения случайных изображений котиков, но выводит только те, у которых имеется информация о породе. Пользователь может лайкать и дизлайкать изображения, просматривать подробную информацию о породе, а также открывать галерею с понравившимися котиками.
 
-## Screenshots
+## Реализованные фичи
 
-![Home Screen](screenshots/home_screen.png)
-![Detail Screen](screenshots/detail_screen.png)
-![Swiping Demo](screenshots/swiping_demo.png)
+- **Случайные изображения котиков:** Получение изображений через endpoint `/v1/images/search?has_breeds=1`.
+- **Кнопки лайка/дизлайка:** Отдельные компоненты, реализованные как StatelessWidget.
+- **Детальный экран:** При нажатии на изображение открывается экран с детальной информацией о породе, описанием и характеристиками.
+- **Галерея лайкнутых котов:** Нажатием на кнопку в AppBar открывается галерея с лайкнутыми котиками.
+- **Кастомный дизайн:** Минималистичный, футуристичный стиль с использованием кастомных иконок, градиентных фонов, дизайнерского шрифта и уникальных элементов оформления.
+- **State Management:** Используется Provider для управления состоянием приложения.
 
-## Technical Implementation
+## Скриншоты интерфейса
 
-- Used Provider for state management
-- Implemented HTTP requests to TheCatAPI
-- Used CachedNetworkImage for efficient image loading
-- Implemented card swiping with flutter_card_swiper
-- Hero animations for smooth transitions
-- Proper error handling and loading states
-- StatefulWidget for managing state
-- StatelessWidget for reusable components (like/dislike buttons)
-- Proper use of Row and Column widgets for layout
+![Home Screen](assets/screenshots/home_screen.png)  
+*Главный экран с отображением случайного котика и кнопками для свайпа.*
 
-## Getting Started
+![Detail Screen](assets/screenshots/detail_screen.png)  
+*Детальный экран с информацией о породе котика.*
 
-1. Clone the repository
-2. Run `flutter pub get` to install dependencies
-3. Replace the API key in `cat_api_service.dart` with your own from [TheCatAPI](https://thecatapi.com/)
-4. Run the app with `flutter run`
+![Liked Cats Gallery](assets/screenshots/liked_cats_screen.png)  
+*Галерея лайкнутых котиков.*
 
-## Download
+## Ссылка на APK
 
-You can download the latest APK version of the app [here](https://drive.google.com/file/d/1abc123xyz/view?usp=sharing).
+Скачайте актуальную версию APK:  
+[Cat Swiper APK]()
 
-## Dependencies
+## Установка и запуск
 
-- flutter: SDK
-- http: ^1.2.1
-- cached_network_image: ^3.3.1
-- flutter_card_swiper: ^6.0.0
-- provider: ^6.1.1
-- flutter_lints: ^5.0.0
+1. **Клонируйте репозиторий:**
+
+   ```bash
+   git clone 
+   cd cat_swiper
+   ```
+
+2. **Установите зависимости:**
+
+   ```bash
+   flutter pub get
+   ```
+
+3. **Запустите приложение:**
+
+   ```bash
+   flutter run
+   ```
+
+## Технические детали
+
+- **Flutter & Dart:** Приложение разработано с использованием Flutter и языка Dart.
+- **HTTP:** Для запросов к [TheCatAPI](https://thecatapi.com) используется пакет http.
+- **CachedNetworkImage:** Для загрузки и кэширования изображений.
+- **Provider:** Для управления состоянием приложения.
+- **Кастомные ассеты:** Приложение использует собственные изображения для иконок и фона, расположенные в папке `assets/`.
