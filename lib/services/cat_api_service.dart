@@ -10,7 +10,6 @@ class CatApiService {
 
   Future<List<Cat>> getRandomCats({int limit = 5, String? breedId}) async {
     try {
-      // Настройка для работы с мобильным интернетом в эмуляторе
       HttpClient client = HttpClient()
         ..badCertificateCallback = 
             ((X509Certificate cert, String host, int port) => true);
@@ -21,7 +20,6 @@ class CatApiService {
       }
 
       try {
-        // Сначала пробуем стандартный http клиент
         final response = await http
             .get(Uri.parse(endpoint), headers: {'x-api-key': _apiKey})
             .timeout(const Duration(seconds: 10));
@@ -35,11 +33,9 @@ class CatApiService {
           throw Exception('Failed to load cats: ${response.statusCode}');
         }
       } catch (httpError) {
-        // Если стандартный клиент не сработал, пробуем HttpClient
         if (httpError is SocketException || 
             httpError.toString().contains('Failed host lookup')) {
           
-          // Используем HttpClient как запасной вариант
           final httpClientRequest = 
               await client.getUrl(Uri.parse(endpoint));
           httpClientRequest.headers.set('x-api-key', _apiKey);
@@ -74,13 +70,11 @@ class CatApiService {
 
   Future<List<Breed>> getBreeds() async {
     try {
-      // Настройка для работы с мобильным интернетом в эмуляторе
       HttpClient client = HttpClient()
         ..badCertificateCallback = 
             ((X509Certificate cert, String host, int port) => true);
       
       try {
-        // Сначала пробуем стандартный http клиент
         final response = await http.get(
           Uri.parse('$_baseUrl/breeds'),
           headers: {'x-api-key': _apiKey},
@@ -93,11 +87,9 @@ class CatApiService {
           throw Exception('Failed to load breeds: ${response.statusCode}');
         }
       } catch (httpError) {
-        // Если стандартный клиент не сработал, пробуем HttpClient
         if (httpError is SocketException || 
             httpError.toString().contains('Failed host lookup')) {
           
-          // Используем HttpClient как запасной вариант
           final httpClientRequest = 
               await client.getUrl(Uri.parse('$_baseUrl/breeds'));
           httpClientRequest.headers.set('x-api-key', _apiKey);
