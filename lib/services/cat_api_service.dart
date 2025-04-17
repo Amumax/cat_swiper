@@ -4,7 +4,8 @@ import '../models/cat.dart';
 
 class CatApiService {
   static const String _baseUrl = 'https://api.thecatapi.com/v1';
-  static const String _apiKey = 'live_28eBZMsCParu7dWJ88d9gjgcGvJEMIPGgqVFYCOQa7Xw0WEaFMqwhHz5SInIGfGk';
+  static const String _apiKey =
+      'live_28eBZMsCParu7dWJ88d9gjgcGvJEMIPGgqVFYCOQa7Xw0WEaFMqwhHz5SInIGfGk';
 
   Future<List<Cat>> getRandomCats({int limit = 5, String? breedId}) async {
     try {
@@ -13,10 +14,9 @@ class CatApiService {
         endpoint += '&breed_ids=$breedId';
       }
 
-      final response = await http.get(
-        Uri.parse(endpoint),
-        headers: {'x-api-key': _apiKey},
-      ).timeout(const Duration(seconds: 10));
+      final response = await http
+          .get(Uri.parse(endpoint), headers: {'x-api-key': _apiKey})
+          .timeout(const Duration(seconds: 10));
 
       if (response.statusCode == 200) {
         final List<dynamic> data = json.decode(response.body);
@@ -29,7 +29,9 @@ class CatApiService {
     } catch (e) {
       if (e.toString().contains('SocketException') ||
           e.toString().contains('Failed host lookup')) {
-        throw Exception('No internet connection. Please check your connection and try again.');
+        throw Exception(
+          'No internet connection. Please check your connection and try again.',
+        );
       } else if (e.toString().contains('TimeoutException')) {
         throw Exception('Connection timed out. Please try again later.');
       } else {
