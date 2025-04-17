@@ -121,12 +121,18 @@ class LikedCatsScreen extends StatelessWidget {
                             child: CachedNetworkImage(
                               imageUrl: cat.url,
                               fit: BoxFit.cover,
-                              placeholder: (context, url) => const Center(
-                                child: CircularProgressIndicator(),
-                              ),
-                              errorWidget: (context, url, error) => const Center(
-                                child: Icon(Icons.error, color: Colors.red, size: 40),
-                              ),
+                              placeholder:
+                                  (context, url) => const Center(
+                                    child: CircularProgressIndicator(),
+                                  ),
+                              errorWidget:
+                                  (context, url, error) => const Center(
+                                    child: Icon(
+                                      Icons.error,
+                                      color: Colors.red,
+                                      size: 40,
+                                    ),
+                                  ),
                             ),
                           ),
                         ),

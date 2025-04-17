@@ -15,11 +15,7 @@ class LikeButton extends StatelessWidget {
         shape: const CircleBorder(),
         padding: const EdgeInsets.all(40),
       ),
-      child: Image.asset(
-        'assets/icons/like_icon.png',
-        width: 125,
-        height: 125,
-      ),
+      child: Image.asset('assets/icons/like_icon.png', width: 125, height: 125),
     );
   }
 }

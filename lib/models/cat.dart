@@ -5,9 +5,9 @@ class Cat {
   final DateTime? likedAt;
 
   Cat({
-    required this.id, 
-    required this.url, 
-    required this.breeds, 
+    required this.id,
+    required this.url,
+    required this.breeds,
     this.likedAt,
   });
 
@@ -43,7 +43,8 @@ class Cat {
         Breed(
           id: 'test-breed',
           name: 'Тестовая порода',
-          description: 'Это тестовый кот для демонстрации приложения без доступа к интернету.',
+          description:
+              'Это тестовый кот для демонстрации приложения без доступа к интернету.',
           temperament: 'Дружелюбный, игривый, любопытный',
           origin: 'Россия',
           lifeSpan: '12-15',
@@ -56,7 +57,7 @@ class Cat {
           intelligence: 5,
           socialNeeds: 3,
           strangerFriendly: 4,
-        )
+        ),
       ],
     );
   }

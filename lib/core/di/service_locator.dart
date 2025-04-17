@@ -8,12 +8,12 @@ final GetIt serviceLocator = GetIt.instance;
 void setupServiceLocator() {
   // Services
   serviceLocator.registerLazySingleton<CatApiService>(() => CatApiService());
-  
+
   // Repositories
   serviceLocator.registerLazySingleton<CatRepository>(
-    () => CatRepository(serviceLocator<CatApiService>())
+    () => CatRepository(serviceLocator<CatApiService>()),
   );
-  
+
   // Providers
   serviceLocator.registerFactory<CatProvider>(() => CatProvider());
 }

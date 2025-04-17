@@ -10,10 +10,11 @@ class CatApiService {
 
   Future<List<Cat>> getRandomCats({int limit = 5, String? breedId}) async {
     try {
-      HttpClient client = HttpClient()
-        ..badCertificateCallback = 
-            ((X509Certificate cert, String host, int port) => true);
-      
+      HttpClient client =
+          HttpClient()
+            ..badCertificateCallback =
+                ((X509Certificate cert, String host, int port) => true);
+
       String endpoint = '$_baseUrl/images/search?limit=$limit&has_breeds=1';
       if (breedId != null && breedId.isNotEmpty) {
         endpoint += '&breed_ids=$breedId';
@@ -33,22 +34,21 @@ class CatApiService {
           throw Exception('Failed to load cats: ${response.statusCode}');
         }
       } catch (httpError) {
-        if (httpError is SocketException || 
+        if (httpError is SocketException ||
             httpError.toString().contains('Failed host lookup')) {
-          
-          final httpClientRequest = 
-              await client.getUrl(Uri.parse(endpoint));
+          final httpClientRequest = await client.getUrl(Uri.parse(endpoint));
           httpClientRequest.headers.set('x-api-key', _apiKey);
-          final httpClientResponse = 
-              await httpClientRequest.close();
-          
+          final httpClientResponse = await httpClientRequest.close();
+
           if (httpClientResponse.statusCode == 200) {
-            final stringData = 
+            final stringData =
                 await httpClientResponse.transform(utf8.decoder).join();
             final List<dynamic> data = json.decode(stringData);
             return data.map((json) => Cat.fromJson(json)).toList();
           } else {
-            throw Exception('Failed to load cats with HttpClient: ${httpClientResponse.statusCode}');
+            throw Exception(
+              'Failed to load cats with HttpClient: ${httpClientResponse.statusCode}',
+            );
           }
         } else {
           rethrow;
@@ -70,15 +70,15 @@ class CatApiService {
 
   Future<List<Breed>> getBreeds() async {
     try {
-      HttpClient client = HttpClient()
-        ..badCertificateCallback = 
-            ((X509Certificate cert, String host, int port) => true);
-      
+      HttpClient client =
+          HttpClient()
+            ..badCertificateCallback =
+                ((X509Certificate cert, String host, int port) => true);
+
       try {
-        final response = await http.get(
-          Uri.parse('$_baseUrl/breeds'),
-          headers: {'x-api-key': _apiKey},
-        ).timeout(const Duration(seconds: 10));
+        final response = await http
+            .get(Uri.parse('$_baseUrl/breeds'), headers: {'x-api-key': _apiKey})
+            .timeout(const Duration(seconds: 10));
 
         if (response.statusCode == 200) {
           final List<dynamic> data = json.decode(response.body);
@@ -87,22 +87,23 @@ class CatApiService {
           throw Exception('Failed to load breeds: ${response.statusCode}');
         }
       } catch (httpError) {
-        if (httpError is SocketException || 
+        if (httpError is SocketException ||
             httpError.toString().contains('Failed host lookup')) {
-          
-          final httpClientRequest = 
-              await client.getUrl(Uri.parse('$_baseUrl/breeds'));
+          final httpClientRequest = await client.getUrl(
+            Uri.parse('$_baseUrl/breeds'),
+          );
           httpClientRequest.headers.set('x-api-key', _apiKey);
-          final httpClientResponse = 
-              await httpClientRequest.close();
-          
+          final httpClientResponse = await httpClientRequest.close();
+
           if (httpClientResponse.statusCode == 200) {
-            final stringData = 
+            final stringData =
                 await httpClientResponse.transform(utf8.decoder).join();
             final List<dynamic> data = json.decode(stringData);
             return data.map((json) => Breed.fromJson(json)).toList();
           } else {
-            throw Exception('Failed to load breeds with HttpClient: ${httpClientResponse.statusCode}');
+            throw Exception(
+              'Failed to load breeds with HttpClient: ${httpClientResponse.statusCode}',
+            );
           }
         } else {
           rethrow;

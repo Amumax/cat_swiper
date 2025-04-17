@@ -61,7 +61,10 @@ class _HomeScreenState extends State<HomeScreen> {
                 icon: const Icon(Icons.photo_library, color: Colors.black87),
                 label: Text(
                   'Liked Cats: ${catProvider.likedCatsCount}',
-                  style: const TextStyle(color: Colors.black87, fontFamily: 'Montserrat'),
+                  style: const TextStyle(
+                    color: Colors.black87,
+                    fontFamily: 'Montserrat',
+                  ),
                 ),
               );
             },
@@ -85,29 +88,34 @@ class _HomeScreenState extends State<HomeScreen> {
               WidgetsBinding.instance.addPostFrameCallback((_) {
                 showDialog(
                   context: context,
-                  builder: (context) => AlertDialog(
-                    title: const Text('Network Error'),
-                    content: Text('${catProvider.error}'),
-                    actions: [
-                      TextButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                          catProvider.fetchCats();
-                        },
-                        child: const Text('Retry'),
+                  builder:
+                      (context) => AlertDialog(
+                        title: const Text('Network Error'),
+                        content: Text('${catProvider.error}'),
+                        actions: [
+                          TextButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                              catProvider.fetchCats();
+                            },
+                            child: const Text('Retry'),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
                 );
               });
-              
+
               return Center(
                 child: Padding(
                   padding: const EdgeInsets.all(24.0),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Icon(Icons.error_outline, size: 64, color: Colors.red),
+                      const Icon(
+                        Icons.error_outline,
+                        size: 64,
+                        color: Colors.red,
+                      ),
                       const SizedBox(height: 16),
                       Text(
                         '${catProvider.error}',
@@ -157,7 +165,12 @@ class _HomeScreenState extends State<HomeScreen> {
                       up: false,
                       down: false,
                     ),
-                    cardBuilder: (context, index, percentThresholdX, percentThresholdY) {
+                    cardBuilder: (
+                      context,
+                      index,
+                      percentThresholdX,
+                      percentThresholdY,
+                    ) {
                       final cat = catProvider.cats[index];
                       return CatCard(
                         cat: cat,

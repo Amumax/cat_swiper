@@ -5,7 +5,9 @@ import '../models/cat.dart';
 import '../services/cat_api_service.dart';
 
 class CatProvider extends ChangeNotifier {
-  final CatRepository _catRepository = CatRepository(serviceLocator<CatApiService>());
+  final CatRepository _catRepository = CatRepository(
+    serviceLocator<CatApiService>(),
+  );
 
   final List<Cat> _cats = [];
   final List<Cat> _likedCats = [];
@@ -16,9 +18,10 @@ class CatProvider extends ChangeNotifier {
   String? _error;
 
   List<Cat> get cats => _cats;
-  List<Cat> get likedCats => _filteredLikedCats.isEmpty && _selectedBreed == null 
-      ? _likedCats 
-      : _filteredLikedCats;
+  List<Cat> get likedCats =>
+      _filteredLikedCats.isEmpty && _selectedBreed == null
+          ? _likedCats
+          : _filteredLikedCats;
   int get likedCatsCount => _likedCatsCount;
   bool get isLoading => _isLoading;
   String? get error => _error;
@@ -109,9 +112,11 @@ class CatProvider extends ChangeNotifier {
     }
 
     _filteredLikedCats.clear();
-    _filteredLikedCats.addAll(_likedCats.where((cat) {
-      return cat.breeds.isNotEmpty && cat.breeds.first.name == _selectedBreed;
-    }));
+    _filteredLikedCats.addAll(
+      _likedCats.where((cat) {
+        return cat.breeds.isNotEmpty && cat.breeds.first.name == _selectedBreed;
+      }),
+    );
   }
 
   void resetLikedCount() {

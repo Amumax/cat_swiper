@@ -17,10 +17,7 @@ class CatCard extends StatelessWidget {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(16),
           gradient: const LinearGradient(
-            colors: [
-              Colors.white,
-              Color(0xFFFFC0CB),
-            ],
+            colors: [Colors.white, Color(0xFFFFC0CB)],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
@@ -46,10 +43,15 @@ class CatCard extends StatelessWidget {
                       fit: BoxFit.cover,
                       memCacheWidth: 800,
                       fadeInDuration: const Duration(milliseconds: 300),
-                      placeholder: (context, url) =>
-                      const Center(child: CircularProgressIndicator()),
-                      errorWidget: (context, url, error) =>
-                      const Icon(Icons.error, size: 50, color: Colors.red),
+                      placeholder:
+                          (context, url) =>
+                              const Center(child: CircularProgressIndicator()),
+                      errorWidget:
+                          (context, url, error) => const Icon(
+                            Icons.error,
+                            size: 50,
+                            color: Colors.red,
+                          ),
                     ),
                   ),
                 ),
@@ -57,7 +59,9 @@ class CatCard extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.all(12.0),
                 child: Text(
-                  cat.breeds.isNotEmpty ? cat.breeds.first.name : 'Unknown Breed',
+                  cat.breeds.isNotEmpty
+                      ? cat.breeds.first.name
+                      : 'Unknown Breed',
                   style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
