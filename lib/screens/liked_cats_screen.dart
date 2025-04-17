@@ -30,14 +30,13 @@ class LikedCatsScreen extends StatelessWidget {
                       child: Text('All Breeds'),
                     ),
                   ];
-                  
+
                   for (final breed in catProvider.availableBreeds) {
-                    items.add(PopupMenuItem<String?>(
-                      value: breed,
-                      child: Text(breed),
-                    ));
+                    items.add(
+                      PopupMenuItem<String?>(value: breed, child: Text(breed)),
+                    );
                   }
-                  
+
                   return items;
                 },
               );
@@ -48,7 +47,7 @@ class LikedCatsScreen extends StatelessWidget {
       body: Consumer<CatProvider>(
         builder: (context, catProvider, child) {
           final likedCats = catProvider.likedCats;
-          
+
           if (likedCats.isEmpty && catProvider.selectedBreed != null) {
             return Center(
               child: Column(
@@ -68,7 +67,7 @@ class LikedCatsScreen extends StatelessWidget {
               ),
             );
           }
-          
+
           if (likedCats.isEmpty) {
             return const Center(
               child: Text(
@@ -77,19 +76,21 @@ class LikedCatsScreen extends StatelessWidget {
               ),
             );
           }
-          
+
           return ListView.builder(
             padding: const EdgeInsets.all(16),
             itemCount: likedCats.length,
             itemBuilder: (context, index) {
               final Cat cat = likedCats[index];
-              final String breedName = cat.breeds.isNotEmpty 
-                  ? cat.breeds.first.name 
-                  : 'Unknown Breed';
-              final String likedDate = cat.likedAt != null
-                  ? DateFormat('dd MMM yyyy, HH:mm').format(cat.likedAt!)
-                  : 'Unknown date';
-                  
+              final String breedName =
+                  cat.breeds.isNotEmpty
+                      ? cat.breeds.first.name
+                      : 'Unknown Breed';
+              final String likedDate =
+                  cat.likedAt != null
+                      ? DateFormat('dd MMM yyyy, HH:mm').format(cat.likedAt!)
+                      : 'Unknown date';
+
               return Card(
                 margin: const EdgeInsets.only(bottom: 16),
                 elevation: 4,
@@ -122,7 +123,8 @@ class LikedCatsScreen extends StatelessWidget {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => DetailScreen(cat: cat),
+                                    builder:
+                                        (context) => DetailScreen(cat: cat),
                                   ),
                                 );
                               },
@@ -164,29 +166,36 @@ class LikedCatsScreen extends StatelessWidget {
                                 ),
                               ),
                               IconButton(
-                                icon: const Icon(Icons.delete, color: Colors.red),
+                                icon: const Icon(
+                                  Icons.delete,
+                                  color: Colors.red,
+                                ),
                                 onPressed: () {
                                   showDialog(
                                     context: context,
-                                    builder: (context) => AlertDialog(
-                                      title: const Text('Remove Cat'),
-                                      content: const Text(
-                                        'Are you sure you want to remove this cat from your liked cats?'
-                                      ),
-                                      actions: [
-                                        TextButton(
-                                          onPressed: () => Navigator.pop(context),
-                                          child: const Text('Cancel'),
+                                    builder:
+                                        (context) => AlertDialog(
+                                          title: const Text('Remove Cat'),
+                                          content: const Text(
+                                            'Are you sure you want to remove this cat from your liked cats?',
+                                          ),
+                                          actions: [
+                                            TextButton(
+                                              onPressed:
+                                                  () => Navigator.pop(context),
+                                              child: const Text('Cancel'),
+                                            ),
+                                            TextButton(
+                                              onPressed: () {
+                                                catProvider.removeLikedCat(
+                                                  cat.id,
+                                                );
+                                                Navigator.pop(context);
+                                              },
+                                              child: const Text('Remove'),
+                                            ),
+                                          ],
                                         ),
-                                        TextButton(
-                                          onPressed: () {
-                                            catProvider.removeLikedCat(cat.id);
-                                            Navigator.pop(context);
-                                          },
-                                          child: const Text('Remove'),
-                                        ),
-                                      ],
-                                    ),
                                   );
                                 },
                               ),
