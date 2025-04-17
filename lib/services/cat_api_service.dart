@@ -21,15 +21,19 @@ class CatApiService {
       if (response.statusCode == 200) {
         final List<dynamic> data = json.decode(response.body);
         return data.map((json) => Cat.fromJson(json)).toList();
+      } else if (response.statusCode == 429) {
+        throw Exception('Rate limit exceeded. Please try again later.');
       } else {
         throw Exception('Failed to load cats: ${response.statusCode}');
       }
     } catch (e) {
       if (e.toString().contains('SocketException') ||
           e.toString().contains('Failed host lookup')) {
-        throw Exception('Нет подключения к интернету. Проверьте соединение и попробуйте снова.');
+        throw Exception('No internet connection. Please check your connection and try again.');
+      } else if (e.toString().contains('TimeoutException')) {
+        throw Exception('Connection timed out. Please try again later.');
       } else {
-        throw Exception('Ошибка загрузки данных: $e');
+        throw Exception('Error loading data: $e');
       }
     }
   }

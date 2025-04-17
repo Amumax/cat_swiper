@@ -82,6 +82,25 @@ class _HomeScreenState extends State<HomeScreen> {
             }
 
             if (catProvider.error != null && catProvider.cats.isEmpty) {
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    title: const Text('Network Error'),
+                    content: Text('${catProvider.error}'),
+                    actions: [
+                      TextButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                          catProvider.fetchCats();
+                        },
+                        child: const Text('Retry'),
+                      ),
+                    ],
+                  ),
+                );
+              });
+              
               return Center(
                 child: Padding(
                   padding: const EdgeInsets.all(24.0),
@@ -103,7 +122,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                         onPressed: () => catProvider.fetchCats(),
                         icon: const Icon(Icons.refresh),
-                        label: const Text('Повторить'),
+                        label: const Text('Retry'),
                       ),
                     ],
                   ),

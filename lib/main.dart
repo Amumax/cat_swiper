@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'core/di/service_locator.dart';
 import 'providers/cat_provider.dart';
 import 'screens/home_screen.dart';
 
 void main() {
+  setupServiceLocator();
   runApp(const MyApp());
 }
 
@@ -13,7 +15,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_) => CatProvider(),
+      create: (_) => serviceLocator<CatProvider>(),
       child: MaterialApp(
         title: 'Cat Swiper',
         debugShowCheckedModeBanner: false,

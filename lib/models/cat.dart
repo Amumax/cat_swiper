@@ -2,8 +2,28 @@ class Cat {
   final String id;
   final String url;
   final List<Breed> breeds;
+  final DateTime? likedAt;
 
-  Cat({required this.id, required this.url, required this.breeds});
+  Cat({
+    required this.id, 
+    required this.url, 
+    required this.breeds, 
+    this.likedAt,
+  });
+
+  Cat copyWith({
+    String? id,
+    String? url,
+    List<Breed>? breeds,
+    DateTime? likedAt,
+  }) {
+    return Cat(
+      id: id ?? this.id,
+      url: url ?? this.url,
+      breeds: breeds ?? this.breeds,
+      likedAt: likedAt ?? this.likedAt,
+    );
+  }
 
   factory Cat.fromJson(Map<String, dynamic> json) {
     List<Breed> breedsList = [];
