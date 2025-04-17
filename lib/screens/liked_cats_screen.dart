@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import '../models/cat.dart';
 import '../providers/cat_provider.dart';
 import '../widgets/cat_card.dart';

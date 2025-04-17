@@ -1,7 +1,8 @@
 import 'package:flutter/foundation.dart';
-import '../models/cat.dart';
-import '../domain/repositories/cat_repository.dart';
 import '../core/di/service_locator.dart';
+import '../domain/repositories/cat_repository.dart';
+import '../models/cat.dart';
+import '../services/cat_api_service.dart';
 
 class CatProvider extends ChangeNotifier {
   final CatRepository _catRepository = CatRepository(serviceLocator<CatApiService>());
