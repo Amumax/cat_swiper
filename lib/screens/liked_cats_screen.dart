@@ -117,17 +117,15 @@ class LikedCatsScreen extends StatelessWidget {
                           ),
                           child: AspectRatio(
                             aspectRatio: 16 / 9,
-                            child: CatCard(
-                              cat: cat,
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder:
-                                        (context) => DetailScreen(cat: cat),
-                                  ),
-                                );
-                              },
+                            child: CachedNetworkImage(
+                              imageUrl: cat.url,
+                              fit: BoxFit.cover,
+                              placeholder: (context, url) => const Center(
+                                child: CircularProgressIndicator(),
+                              ),
+                              errorWidget: (context, url, error) => const Center(
+                                child: Icon(Icons.error, color: Colors.red, size: 40),
+                              ),
                             ),
                           ),
                         ),
