@@ -6,7 +6,7 @@ class CatApiService {
   static const String _baseUrl = 'https://api.thecatapi.com/v1';
   static const String _apiKey = 'live_28eBZMsCParu7dWJ88d9gjgcGvJEMIPGgqVFYCOQa7Xw0WEaFMqwhHz5SInIGfGk';
 
-  Future<List<Cat>> getRandomCats({int limit = 1, String? breedId}) async {
+  Future<List<Cat>> getRandomCats({int limit = 5, String? breedId}) async {
     try {
       String endpoint = '$_baseUrl/images/search?limit=$limit&has_breeds=1';
       if (breedId != null && breedId.isNotEmpty) {
