@@ -1,8 +1,8 @@
 import 'package:flutter/foundation.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../core/di/service_locator.dart';
 import '../domain/repositories/cat_repository.dart';
 import '../models/cat.dart';
-import '../services/cat_api_service.dart';
 import '../services/connectivity_service.dart';
 
 class CatProvider extends ChangeNotifier {
@@ -17,6 +17,7 @@ class CatProvider extends ChangeNotifier {
   bool _isLoading = false;
   String? _error;
   bool _isOfflineMode = false;
+  bool _hasShownOfflineMessage = false;
 
   List<Cat> get cats => _cats;
   List<Cat> get likedCats =>
@@ -28,6 +29,11 @@ class CatProvider extends ChangeNotifier {
   String? get error => _error;
   String? get selectedBreed => _selectedBreed;
   bool get isOfflineMode => _isOfflineMode;
+  bool get hasShownOfflineMessage => _hasShownOfflineMessage;
+  
+  set hasShownOfflineMessage(bool value) {
+    _hasShownOfflineMessage = value;
+  }
 
   Cat? get currentCat => _cats.isNotEmpty ? _cats.first : null;
 
@@ -42,37 +48,62 @@ class CatProvider extends ChangeNotifier {
   }
 
   CatProvider() {
+    _initializeProvider();
+  }
+  
+  Future<void> _initializeProvider() async {
+    // Subscribe to network state changes
     _connectivityService.connectivityStream.listen((isConnected) {
+      final wasOffline = _isOfflineMode;
       _isOfflineMode = !isConnected;
-      notifyListeners();
+      
+      // If state changed, update UI
+      if (wasOffline != _isOfflineMode) {
+        notifyListeners();
+        
+        // If connection restored, update data
+        if (!_isOfflineMode) {
+          fetchCats(limit: 5);
+        }
+      }
     });
     
-    _loadLikedCats();
+    // Check current network state
+    final isConnected = await _connectivityService.checkConnectivity();
+    _isOfflineMode = !isConnected;
+    
+    // Load saved data
+    await _loadLikedCatsFromDb();
+    await _loadLikedCountFromPrefs();
   }
 
-  Future<void> _loadLikedCats() async {
+  Future<void> _loadLikedCatsFromDb() async {
     try {
       _likedCats = await _catRepository.getLikedCats();
-      _likedCatsCount = _likedCats.length;
       _applyBreedFilter();
       notifyListeners();
     } catch (e) {
-      _loadLikedCountFromPrefs();
+      // Handle loading error
     }
   }
 
   Future<void> _loadLikedCountFromPrefs() async {
     try {
-      _likedCatsCount = _likedCats.length;
+      final prefs = await SharedPreferences.getInstance();
+      _likedCatsCount = prefs.getInt('liked_cats_count') ?? _likedCats.length;
       notifyListeners();
     } catch (e) {
-      // Handle error
+      _likedCatsCount = _likedCats.length;
     }
   }
 
   Future<void> _saveLikedCountToPrefs() async {
-    // No implementation needed for now
-    _likedCatsCount = _likedCats.length;
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setInt('liked_cats_count', _likedCatsCount);
+    } catch (e) {
+      // Handle saving error
+    }
   }
 
   Future<void> fetchCats({int limit = 5}) async {
@@ -89,6 +120,7 @@ class CatProvider extends ChangeNotifier {
         _isOfflineMode = !isConnected;
       } catch (e) {
         if (_cats.isEmpty) {
+          // If failed to load cats and list is empty, add test cats
           for (int i = 0; i < 3; i++) {
             _cats.add(Cat.createTestCat());
           }
@@ -113,7 +145,7 @@ class CatProvider extends ChangeNotifier {
       
       await _catRepository.likeCat(cat);
       
-      // Обновляем список лайкнутых котиков из репозитория
+      // Update liked cats list from repository
       _likedCats = await _catRepository.getLikedCats();
       _likedCatsCount = _likedCats.length;
       _cats.removeAt(0);
@@ -145,7 +177,8 @@ class CatProvider extends ChangeNotifier {
   Future<void> removeLikedCat(String catId) async {
     await _catRepository.removeLike(catId);
     
-    _likedCats.removeWhere((cat) => cat.id == catId);
+    // Update liked cats list from repository
+    _likedCats = await _catRepository.getLikedCats();
     _likedCatsCount = _likedCats.length;
     _applyBreedFilter();
     _saveLikedCountToPrefs();
@@ -182,6 +215,6 @@ class CatProvider extends ChangeNotifier {
   }
   
   Future<void> refreshLikedCats() async {
-    await _loadLikedCats();
+    await _loadLikedCatsFromDb();
   }
 }

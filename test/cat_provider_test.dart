@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
@@ -5,6 +6,7 @@ import 'package:homework_1/domain/repositories/cat_repository.dart';
 import 'package:homework_1/models/cat.dart';
 import 'package:homework_1/providers/cat_provider.dart';
 import 'package:homework_1/services/connectivity_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'cat_provider_test.mocks.dart';
 
@@ -13,12 +15,137 @@ void main() {
   late MockCatRepository mockCatRepository;
   late MockConnectivityService mockConnectivityService;
   late CatProvider catProvider;
+  late StreamController<bool> connectivityStreamController;
 
   setUp(() {
     mockCatRepository = MockCatRepository();
     mockConnectivityService = MockConnectivityService();
+    connectivityStreamController = StreamController<bool>.broadcast();
     
     when(mockConnectivityService.connectivityStream)
+        .thenAnswer((_) => connectivityStreamController.stream);
+    when(mockConnectivityService.checkConnectivity())
+        .thenAnswer((_) async => true);
+    when(mockCatRepository.getLikedCats())
+        .thenAnswer((_) async => []);
+    
+    // Setup SharedPreferences for tests
+    SharedPreferences.setMockInitialValues({});
+    
+    // Inject mocks into provider via service locator
+    // This requires additional setup in real application
+    
+    catProvider = CatProvider();
+  });
+  
+  tearDown(() {
+    connectivityStreamController.close();
+  });
+  
+  group('CatProvider Tests', () {
+    test('initial state should be correct', () {
+      expect(catProvider.cats, isEmpty);
+      expect(catProvider.likedCats, isEmpty);
+      expect(catProvider.isLoading, isFalse);
+      expect(catProvider.error, isNull);
+    });
+    
+    test('fetchCats should update state correctly', () async {
+      // Arrange
+      final testCats = [
+        Cat(id: '1', url: 'url1', breeds: []),
+        Cat(id: '2', url: 'url2', breeds: []),
+      ];
+      when(mockCatRepository.getRandomCats(limit: 5))
+          .thenAnswer((_) async => testCats);
+      
+      // Act
+      await catProvider.fetchCats();
+      
+      // Assert
+      expect(catProvider.cats, equals(testCats));
+      expect(catProvider.isLoading, isFalse);
+      expect(catProvider.error, isNull);
+    });
+    
+    test('likeCat should update liked cats', () async {
+      // Arrange
+      final testCat = Cat(id: '1', url: 'url1', breeds: []);
+      final likedCat = testCat.copyWith(likedAt: DateTime.now());
+      
+      when(mockCatRepository.getRandomCats(limit: 5))
+          .thenAnswer((_) async => [testCat]);
+      when(mockCatRepository.likeCat(testCat))
+          .thenAnswer((_) async {});
+      when(mockCatRepository.getLikedCats())
+          .thenAnswer((_) async => [likedCat]);
+      
+      // Act
+      await catProvider.fetchCats();
+      await catProvider.likeCat();
+      
+      // Assert
+      expect(catProvider.likedCats, equals([likedCat]));
+      expect(catProvider.likedCatsCount, equals(1));
+      verify(mockCatRepository.likeCat(testCat)).called(1);
+    });
+    
+    test('removeLikedCat should remove cat from liked cats', () async {
+      // Arrange
+      final testCat = Cat(id: '1', url: 'url1', breeds: [], likedAt: DateTime.now());
+      
+      when(mockCatRepository.getLikedCats())
+          .thenAnswer((_) async => [testCat])
+          .thenAnswer((_) async => []);
+      when(mockCatRepository.removeLike(testCat.id))
+          .thenAnswer((_) async {});
+      
+      // Act
+      await catProvider.refreshLikedCats();
+      await catProvider.removeLikedCat(testCat.id);
+      
+      // Assert
+      expect(catProvider.likedCats, isEmpty);
+      verify(mockCatRepository.removeLike(testCat.id)).called(1);
+    });
+    
+    test('filterByBreed should filter liked cats correctly', () async {
+      // Arrange
+      final breed1 = Breed(
+        id: 'breed1',
+        name: 'Breed 1',
+        description: 'Description',
+        temperament: 'Temperament',
+        origin: 'Origin',
+        lifeSpan: '10-15',
+      );
+      
+      final breed2 = Breed(
+        id: 'breed2',
+        name: 'Breed 2',
+        description: 'Description',
+        temperament: 'Temperament',
+        origin: 'Origin',
+        lifeSpan: '10-15',
+      );
+      
+      final testCats = [
+        Cat(id: '1', url: 'url1', breeds: [breed1], likedAt: DateTime.now()),
+        Cat(id: '2', url: 'url2', breeds: [breed2], likedAt: DateTime.now()),
+      ];
+      
+      when(mockCatRepository.getLikedCats())
+          .thenAnswer((_) async => testCats);
+      
+      // Act
+      await catProvider.refreshLikedCats();
+      catProvider.filterByBreed('Breed 1');
+      
+      // Assert
+      expect(catProvider.likedCats.length, equals(1));
+      expect(catProvider.likedCats.first.id, equals('1'));
+    });
+  });
         .thenAnswer((_) => Stream<bool>.fromIterable([true]));
     when(mockConnectivityService.isConnected).thenReturn(true);
     when(mockConnectivityService.checkConnectivity()).thenAnswer((_) async => true);

@@ -25,8 +25,30 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Provider.of<CatProvider>(context, listen: false).fetchCats(limit: 5);
+      final catProvider = Provider.of<CatProvider>(context, listen: false);
+      catProvider.fetchCats(limit: 5);
+      
+      // Check connectivity state
+      _checkConnectivity();
     });
+  }
+  
+  Future<void> _checkConnectivity() async {
+    final catProvider = Provider.of<CatProvider>(context, listen: false);
+    if (catProvider.isOfflineMode && !catProvider.hasShownOfflineMessage) {
+      catProvider.hasShownOfflineMessage = true;
+      
+      // Show offline mode message
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('You are in offline mode. Showing cached cats.'),
+            duration: Duration(seconds: 3),
+            backgroundColor: Colors.orange,
+          ),
+        );
+      });
+    }
   }
 
   @override
