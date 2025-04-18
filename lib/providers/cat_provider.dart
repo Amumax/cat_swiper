@@ -112,7 +112,7 @@ class CatProvider extends ChangeNotifier {
       final cat = _cats.first;
       final likedCat = cat.copyWith(likedAt: DateTime.now());
       
-      await _catRepository.likeCat(cat.id);
+      await _catRepository.likeCat(cat);
       
       _likedCats.add(likedCat);
       _likedCatsCount++;

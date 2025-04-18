@@ -31,15 +31,19 @@ class CatRepository {
     return [];
   }
   
-  Future<void> likeCat(String catId) async {
-    // Implementation would store the liked cat
+  Future<void> likeCat(Cat cat) async {
+    if (_localRepository != null) {
+      await _localRepository!.likeCat(cat);
+    }
   }
   
   Future<void> dislikeCat(String catId) async {
-    // Implementation would handle disliked cat
+    // Implementation for disliked cat
   }
   
   Future<void> removeLike(String catId) async {
-    // Implementation would remove a liked cat
+    if (_localRepository != null) {
+      await _localRepository!.removeLike(catId);
+    }
   }
 }
