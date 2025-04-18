@@ -1,10 +1,12 @@
 import '../../models/cat.dart';
 import '../../services/cat_api_service.dart';
+import '../../data/repositories/local_cat_repository.dart';
 
 class CatRepository {
   final CatApiService _apiService;
+  final LocalCatRepository? _localRepository;
 
-  CatRepository(this._apiService);
+  CatRepository(this._apiService, [this._localRepository]);
 
   Future<List<Cat>> getRandomCats({int limit = 5, String? breedId}) async {
     try {
@@ -20,5 +22,24 @@ class CatRepository {
     } catch (e) {
       rethrow;
     }
+  }
+  
+  Future<List<Cat>> getLikedCats() async {
+    if (_localRepository != null) {
+      return await _localRepository!.getLikedCats();
+    }
+    return [];
+  }
+  
+  Future<void> likeCat(String catId) async {
+    // Implementation would store the liked cat
+  }
+  
+  Future<void> dislikeCat(String catId) async {
+    // Implementation would handle disliked cat
+  }
+  
+  Future<void> removeLike(String catId) async {
+    // Implementation would remove a liked cat
   }
 }

@@ -23,7 +23,10 @@ Future<void> setupServiceLocator() async {
   serviceLocator.registerLazySingleton<CatApiService>(() => CatApiService());
 
   serviceLocator.registerLazySingleton<CatRepository>(
-    () => CatRepository(serviceLocator<CatApiService>()),
+    () => CatRepository(
+      serviceLocator<CatApiService>(),
+      serviceLocator<LocalCatRepository>(),
+    ),
   );
 
   serviceLocator.registerFactory<CatProvider>(() => CatProvider());

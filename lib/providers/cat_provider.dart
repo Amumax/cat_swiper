@@ -1,5 +1,4 @@
 import 'package:flutter/foundation.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import '../core/di/service_locator.dart';
 import '../domain/repositories/cat_repository.dart';
 import '../models/cat.dart';
@@ -7,9 +6,7 @@ import '../services/cat_api_service.dart';
 import '../services/connectivity_service.dart';
 
 class CatProvider extends ChangeNotifier {
-  final CatRepository _catRepository = CatRepository(
-    serviceLocator<CatApiService>(),
-  );
+  final CatRepository _catRepository = serviceLocator<CatRepository>();
   final ConnectivityService _connectivityService = serviceLocator<ConnectivityService>();
 
   final List<Cat> _cats = [];
@@ -66,19 +63,16 @@ class CatProvider extends ChangeNotifier {
 
   Future<void> _loadLikedCountFromPrefs() async {
     try {
-      final prefs = await SharedPreferences.getInstance();
-      _likedCatsCount = prefs.getInt('liked_cats_count') ?? 0;
+      _likedCatsCount = _likedCats.length;
       notifyListeners();
     } catch (e) {
+      // Handle error
     }
   }
 
   Future<void> _saveLikedCountToPrefs() async {
-    try {
-      final prefs = await SharedPreferences.getInstance();
-      await prefs.setInt('liked_cats_count', _likedCatsCount);
-    } catch (e) {
-    }
+    // No implementation needed for now
+    _likedCatsCount = _likedCats.length;
   }
 
   Future<void> fetchCats({int limit = 5}) async {
