@@ -19,6 +19,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final CardSwiperController _cardController = CardSwiperController();
+  bool _hasShownOfflineMessage = false;
 
   @override
   void initState() {
@@ -80,6 +81,19 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         child: Consumer<CatProvider>(
           builder: (context, catProvider, child) {
+            if (catProvider.isOfflineMode && !_hasShownOfflineMessage) {
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                _hasShownOfflineMessage = true;
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('You are in offline mode. Showing cached cats.'),
+                    duration: Duration(seconds: 3),
+                    backgroundColor: Colors.orange,
+                  ),
+                );
+              });
+            }
+            
             if (catProvider.isLoading && catProvider.cats.isEmpty) {
               return const Center(child: CircularProgressIndicator());
             }
@@ -88,20 +102,19 @@ class _HomeScreenState extends State<HomeScreen> {
               WidgetsBinding.instance.addPostFrameCallback((_) {
                 showDialog(
                   context: context,
-                  builder:
-                      (context) => AlertDialog(
-                        title: const Text('Network Error'),
-                        content: Text('${catProvider.error}'),
-                        actions: [
-                          TextButton(
-                            onPressed: () {
-                              Navigator.pop(context);
-                              catProvider.fetchCats();
-                            },
-                            child: const Text('Retry'),
-                          ),
-                        ],
+                  builder: (context) => AlertDialog(
+                    title: const Text('Network Error'),
+                    content: Text('${catProvider.error}'),
+                    actions: [
+                      TextButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                          catProvider.fetchCats();
+                        },
+                        child: const Text('Retry'),
                       ),
+                    ],
+                  ),
                 );
               });
 
@@ -144,6 +157,28 @@ class _HomeScreenState extends State<HomeScreen> {
 
             return Column(
               children: [
+                if (catProvider.isOfflineMode)
+                  Container(
+                    padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                    color: Colors.orange.withOpacity(0.8),
+                    child: Row(
+                      children: [
+                        const Icon(Icons.wifi_off, color: Colors.white),
+                        const SizedBox(width: 8),
+                        const Expanded(
+                          child: Text(
+                            'Offline mode: Showing cached cats',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                        IconButton(
+                          icon: const Icon(Icons.refresh, color: Colors.white),
+                          onPressed: () => catProvider.fetchCats(),
+                          tooltip: 'Try to reconnect',
+                        ),
+                      ],
+                    ),
+                  ),
                 Expanded(
                   child: CardSwiper(
                     controller: _cardController,

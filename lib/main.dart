@@ -4,8 +4,11 @@ import 'core/di/service_locator.dart';
 import 'providers/cat_provider.dart';
 import 'screens/home_screen.dart';
 
-void main() {
-  setupServiceLocator();
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  
+  await setupServiceLocator();
+  
   runApp(const MyApp());
 }
 
@@ -33,6 +36,9 @@ class MyApp extends StatelessWidget {
             ),
           ),
           scaffoldBackgroundColor: Colors.white,
+          snackBarTheme: const SnackBarThemeData(
+            behavior: SnackBarBehavior.floating,
+          ),
         ),
         home: const HomeScreen(),
       ),

@@ -1,10 +1,19 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import '../models/cat.dart';
 
 class CatCard extends StatelessWidget {
   final Cat cat;
   final VoidCallback onTap;
+  
+  static final customCacheManager = CacheManager(
+    Config(
+      'catImagesCache',
+      stalePeriod: const Duration(days: 7),
+      maxNrOfCacheObjects: 100,
+    ),
+  );
 
   const CatCard({super.key, required this.cat, required this.onTap});
 
@@ -43,15 +52,15 @@ class CatCard extends StatelessWidget {
                       fit: BoxFit.cover,
                       memCacheWidth: 800,
                       fadeInDuration: const Duration(milliseconds: 300),
-                      placeholder:
-                          (context, url) =>
-                              const Center(child: CircularProgressIndicator()),
-                      errorWidget:
-                          (context, url, error) => const Icon(
-                            Icons.error,
-                            size: 50,
-                            color: Colors.red,
-                          ),
+                      cacheManager: customCacheManager,
+                      placeholder: (context, url) => const Center(
+                        child: CircularProgressIndicator(),
+                      ),
+                      errorWidget: (context, url, error) => const Icon(
+                        Icons.error,
+                        size: 50,
+                        color: Colors.red,
+                      ),
                     ),
                   ),
                 ),

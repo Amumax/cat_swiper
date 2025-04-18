@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import '../models/cat.dart';
+import '../widgets/cat_card.dart';
 
 class DetailScreen extends StatelessWidget {
   final Cat cat;
@@ -65,18 +66,21 @@ class DetailScreen extends StatelessWidget {
               Hero(
                 tag: 'cat_image_${cat.id}',
                 child: CachedNetworkImage(
+                  cacheManager: CatCard.customCacheManager,
                   imageUrl: cat.url,
                   height: 300,
                   width: double.infinity,
                   fit: BoxFit.cover,
                   memCacheWidth: 1200,
                   fadeInDuration: const Duration(milliseconds: 300),
-                  placeholder:
-                      (context, url) =>
-                          const Center(child: CircularProgressIndicator()),
-                  errorWidget:
-                      (context, url, error) =>
-                          const Icon(Icons.error, size: 50, color: Colors.red),
+                  placeholder: (context, url) => const Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                  errorWidget: (context, url, error) => const Icon(
+                    Icons.error,
+                    size: 50,
+                    color: Colors.red,
+                  ),
                 ),
               ),
               const SizedBox(height: 16),
