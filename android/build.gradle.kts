@@ -8,7 +8,8 @@ allprojects {
 // Устанавливаем Java версию для всех проектов
 allprojects {
     tasks.withType<JavaCompile> {
-        options.release.set(11)
+        sourceCompatibility = JavaVersion.VERSION_11.toString()
+        targetCompatibility = JavaVersion.VERSION_11.toString()
     }
 }
 
