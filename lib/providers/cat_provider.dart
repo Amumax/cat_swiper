@@ -110,12 +110,12 @@ class CatProvider extends ChangeNotifier {
   Future<void> likeCat() async {
     if (_cats.isNotEmpty) {
       final cat = _cats.first;
-      final likedCat = cat.copyWith(likedAt: DateTime.now());
       
       await _catRepository.likeCat(cat);
       
-      _likedCats.add(likedCat);
-      _likedCatsCount++;
+      // Обновляем список лайкнутых котиков из репозитория
+      _likedCats = await _catRepository.getLikedCats();
+      _likedCatsCount = _likedCats.length;
       _cats.removeAt(0);
       
       if (_cats.length < 3) {
