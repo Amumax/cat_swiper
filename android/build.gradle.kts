@@ -5,7 +5,12 @@ allprojects {
     }
 }
 
-// Отключаем использование NDK, так как он не требуется для этого проекта
+// Устанавливаем Java версию для всех проектов
+allprojects {
+    tasks.withType<JavaCompile> {
+        options.release.set(11)
+    }
+}
 
 val newBuildDir: Directory = rootProject.layout.buildDirectory.dir("../../build").get()
 rootProject.layout.buildDirectory.value(newBuildDir)
