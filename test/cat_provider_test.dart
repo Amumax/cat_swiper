@@ -1,16 +1,14 @@
 import 'dart:async';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/annotations.dart';
-import 'package:mockito/mockito.dart';
+import 'package:mocktail/mocktail.dart';
 import 'package:homework_1/domain/repositories/cat_repository.dart';
 import 'package:homework_1/models/cat.dart';
 import 'package:homework_1/providers/cat_provider.dart';
 import 'package:homework_1/services/connectivity_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'cat_provider_test.mocks.dart';
-
-@GenerateMocks([CatRepository, ConnectivityService])
+class MockCatRepository extends Mock implements CatRepository {}
+class MockConnectivityService extends Mock implements ConnectivityService {}
 void main() {
   late MockCatRepository mockCatRepository;
   late MockConnectivityService mockConnectivityService;

@@ -1,15 +1,13 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/annotations.dart';
-import 'package:mockito/mockito.dart';
+import 'package:mocktail/mocktail.dart';
 import 'package:homework_1/data/repositories/local_cat_repository.dart';
 import 'package:homework_1/domain/repositories/cat_repository.dart';
 import 'package:homework_1/models/cat.dart';
 import 'package:homework_1/services/cat_api_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'cat_repository_test.mocks.dart';
-
-@GenerateMocks([CatApiService, LocalCatRepository])
+class MockCatApiService extends Mock implements CatApiService {}
+class MockLocalCatRepository extends Mock implements LocalCatRepository {}
 void main() {
   late MockCatApiService mockApiService;
   late MockLocalCatRepository mockLocalRepository;
